@@ -3,6 +3,7 @@ lib Discount
   fun mkd_string(buffer : Pointer(LibC::Char), size : Int32, flags : Int32) : Void*
   fun mkd_compile(doc : Void*, flags : Int32) : Int32
   fun mkd_document(doc : Void*, html : Pointer(Pointer(LibC::Char))) : Int32
+  fun mkd_toc(doc : Void*, toc : Pointer(Pointer(LibC::Char))) : Int32
   fun mkd_cleanup(doc : Void*)
   MKD_NOLINKS          = 0x00000001 # don't do link processing, block <a> tags
   MKD_NOIMAGE          = 0x00000002 # don't do image processing, block <img>
