@@ -25,23 +25,24 @@ You can use Discount to compile markdown to HTML like this:
 
 ```crystal
       markdown = "This *is* **markdown**"
-      doc = Discount.mkd_string(markdown.to_unsafe, markdown.bytesize, Discount::FLAGS)
-      Discount.mkd_compile(doc, Discount::FLAGS)
-      _html = Pointer(Pointer(LibC::Char)).malloc 1
-      size = Discount.mkd_document(doc, _html)
-      slice = Slice.new(_html.value, size)
-      html = String.new(slice)
-      Discount.mkd_cleanup(doc)
+      html = Discount.compile(markdown)
 ```
 
-Don't be scared by all the weird stuff, the only interesting bits are:
+This is the whole API:
 
-* `markdown` is a String
-* `html` is a String
-* Only call `mdk_cleanup` **after** you create html
+```crystal
+  # Compile `text` from Markdown to HTML
+  def self.compile(
+    text : String,
+    with_toc : Bool = false,
+    flags = LibDiscount::MKD_FENCEDCODE | LibDiscount::MKD_TOC
+  )
+```
 
-`Discount::FLAGS` is set to `Discount::MKD_TOK` but you can use any combination of
-the flags in [the discount docs](http://www.pell.portland.or.us/~orc/Code/discount/) 
+* `with_toc` adds a simple table of contents at the beginning of
+  the returned HTML
+* `flags` can be any combination of the flags in
+  [the discount docs](http://www.pell.portland.or.us/~orc/Code/discount/)
 
 ## Development
 

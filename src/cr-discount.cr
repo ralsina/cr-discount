@@ -1,5 +1,5 @@
 @[Link("markdown")]
-lib Discount
+lib LibDiscount
   fun mkd_string(buffer : Pointer(LibC::Char), size : Int32, flags : Int32) : Void*
   fun mkd_compile(doc : Void*, flags : Int32) : Int32
   fun mkd_document(doc : Void*, html : Pointer(Pointer(LibC::Char))) : Int32
@@ -37,5 +37,29 @@ lib Discount
   MKD_LATEX            = 0x40000000 # handle embedded LaTeX escapes
   MKD_EXPLICITLIST     = 0x80000000 # don't combine numbered/bulletted lists
 
-  FLAGS = MKD_TOC
+  FLAGS = MKD_FENCEDCODE | MKD_TOC
+end
+
+module Discount
+  # Compile `text` from Markdown to HTML
+  def self.compile(
+    text : String,
+    with_toc : Bool = false,
+    flags = LibDiscount::MKD_FENCEDCODE | LibDiscount::MKD_TOC
+  )
+    doc = LibDiscount.mkd_string(text.to_unsafe, text.bytesize, flags)
+    LibDiscount.mkd_compile(doc, flags)
+    _html = Pointer(Pointer(LibC::Char)).malloc 1
+    size = LibDiscount.mkd_document(doc, _html)
+    slice = Slice.new(_html.value, size)
+    html = String.new(slice)
+    if with_toc
+      toc = Pointer(Pointer(LibC::Char)).malloc 1
+      toc_size = LibDiscount.mkd_toc(doc, toc)
+      toc_s = String.new(Slice.new(toc.value, toc_size))
+      html = toc_s + html
+    end
+    LibDiscount.mkd_cleanup(doc)
+    html
+  end
 end
