@@ -46,7 +46,7 @@ module Discount
     text : String,
     with_toc : Bool = false,
     flags = LibDiscount::MKD_FENCEDCODE | LibDiscount::MKD_TOC
-  )
+  ) : Array(String)
     doc = LibDiscount.mkd_string(text.to_unsafe, text.bytesize, flags)
     LibDiscount.mkd_compile(doc, flags)
     _html = Pointer(Pointer(LibC::Char)).malloc 1
@@ -57,9 +57,10 @@ module Discount
       toc = Pointer(Pointer(LibC::Char)).malloc 1
       toc_size = LibDiscount.mkd_toc(doc, toc)
       toc_s = String.new(Slice.new(toc.value, toc_size))
-      html = toc_s + html
+      LibDiscount.mkd_cleanup(doc)
+      return [html, toc_s]
     end
     LibDiscount.mkd_cleanup(doc)
-    html
+    [html, ""]
   end
 end

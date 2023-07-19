@@ -16,6 +16,6 @@ describe "Discount" do
   end
 
   it "works with nicer API" do
-    Discount.compile("This *is* **markdown**").should eq "<p>This <em>is</em> <strong>markdown</strong></p>"
+    Discount.compile("This *is* **markdown**")[0].should eq "<p>This <em>is</em> <strong>markdown</strong></p>"
   end
 end
