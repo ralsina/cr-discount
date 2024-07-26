@@ -1,4 +1,5 @@
-@[Link("markdown")]
+@[Link(ldflags: "-L#{__DIR__}/../ext/")]
+@[Link(ldflags: "#{__DIR__}/../ext/libmarkdown.a")]
 lib LibDiscount
   fun mkd_string(buffer : Pointer(LibC::Char), size : Int32, flags : Int32) : Void*
   fun mkd_compile(doc : Void*, flags : Int32) : Int32
@@ -14,7 +15,7 @@ lib LibDiscount
   MKD_NO_EXT           = 0x00000040 # don't allow pseudo-protocols
   MKD_CDATA            = 0x00000080 # generate code for xml ![CDATA[...]]
   MKD_NOSUPERSCRIPT    = 0x00000100 # no A^B
-  MKD_NORELAXED        = 0x00000200 # emphasis happens /everywhere/
+  MKD_NORELAXED        = 0x00000200 # emphasis happens everywhere
   MKD_NOTABLES         = 0x00000400 # disallow tables
   MKD_NOSTRIKETHROUGH  = 0x00000800 # forbid ~~strikethrough~~
   MKD_TOC              = 0x00001000 # do table-of-contents processing
