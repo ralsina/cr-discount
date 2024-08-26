@@ -1,2 +1,2 @@
 * Provide a nicer interface
-* Use out pointer instead of `**` 
+* Use out pointer instead of `**`

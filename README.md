@@ -46,7 +46,8 @@ This is the whole API:
 
 ## Development
 
-I am not planning on developing this much further since it already does what I want :-)
+I am not planning on developing this much further since it already does
+what I want :-)
 
 ## Contributing
 
@@ -58,4 +59,4 @@ I am not planning on developing this much further since it already does what I w
 
 ## Contributors
 
-- [Roberto Alsina](https://github.com/ralsina) - creator and maintainer
+* [Roberto Alsina](https://github.com/ralsina) - creator and maintainer
